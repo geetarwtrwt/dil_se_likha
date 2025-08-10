@@ -76,13 +76,13 @@ export default function AddBlog() {
         toast.error(res.data.message);
       }
     } catch (err) {
-        console.log(err.message)
+      console.log(err.message);
       toast.error(err.message);
     }
   };
   return (
     <>
-      <div className="h-screen w-[50%] flex items-center justify-center">
+      <div className="min-h-screen w-[50%] flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center gap-6 font-bold w-full"
@@ -123,15 +123,15 @@ export default function AddBlog() {
           </div>
           <div>
             <label htmlFor="description">Blog Description</label>
-            <input
-              type="text"
+            <textarea
+              rows={5}
               id="description"
               name="description"
               value={inputData.description}
               onChange={handleChange}
               placeholder="Enter Blog Description"
               className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
-            />
+            ></textarea>
           </div>
           <div>
             <label>Blog Category</label>

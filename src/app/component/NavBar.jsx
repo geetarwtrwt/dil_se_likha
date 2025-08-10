@@ -3,6 +3,7 @@ import React, { useState } from "react";
 import { IoSearch } from "react-icons/io5";
 import { FaHeart, FaBars } from "react-icons/fa6";
 import Link from "next/link";
+import { useRouter } from "next/router";
 
 function NavBar() {
   const [open, setOpen] = useState(false);
@@ -72,7 +73,10 @@ function NavBar() {
           <Link href="/" className="block hover:text-muted transition-all">
             Contact
           </Link>
-          <button className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-secondary transition text-white rounded-full text-sm">
+          <button
+            onClick={() => useRouter.push("/my-account")}
+            className="cursor-pointer px-6 py-2 mt-2 bg-primary hover:bg-secondary transition text-white rounded-full text-sm"
+          >
             Login
           </button>
         </div>

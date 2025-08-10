@@ -1,159 +1,92 @@
 "use client";
-import React, { useState } from "react";
-import Image from "next/image";
-import { FaImage } from "react-icons/fa";
-import { toast } from "react-toastify";
-import axios from "axios";
+import React from "react";
 
-export default function AddBlog() {
-  let [inputData, setInputData] = useState({
-    title: "",
-    description: "",
-    category: "",
-  });
+function page() {
+  const [state, setState] = React.useState("login");
+  const [name, setName] = React.useState("");
+  const [email, setEmail] = React.useState("");
+  const [password, setPassword] = React.useState("");
 
-  console.log("geeta");
-  let [image, setImage] = useState(null);
-  let [imagePreview, setImagePreview] = useState(null);
-  let handleImage = (e) => {
-    let file = e.target.files[0];
-    if (!file) return;
-
-    let exits = file.name.split(".").pop().toLowerCase();
-    if (!["jpg", "jpeg", "png", "webp"].includes(exits)) {
-      toast.error("Invalid file type");
-      return;
-    }
-
-    setImage(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-  let handleChange = (e) => {
-    let { name, value } = e.target;
-    setInputData({ ...inputData, [name]: value });
-  };
-
-  let handleSubmit = async (e) => {
-    e.preventDefault();
-    try {
-      if (
-        !image ||
-        !inputData.title ||
-        !inputData.description ||
-        !inputData.category
-      ) {
-        toast.error("All fields are required");
-        return;
-      }
-
-      let formData = new FormData();
-      formData.append("file", image);
-      formData.append("upload_preset", "dil_se_likha");
-      formData.append("cloud_name", "dgllhyxgc");
-      let cloudinaryRes = await fetch(
-        "https://api.cloudinary.com/v1_1/dgllhyxgc/image/upload",
-        {
-          method: "POST",
-          body: formData,
-        }
-      );
-      let data = await cloudinaryRes.json();
-      if (!data?.secure_url) throw new Error("Image upload failed");
-      let imgUrl = data.secure_url;
-
-      let res = await axios.post("/api/blog/add", {
-        ...inputData,
-        image: imgUrl,
-      });
-      if (res.data.success) {
-        toast.success(res.data.message);
-        setInputData({
-          title: "",
-          description: "",
-          category: "",
-        });
-        setImage(null);
-        setImagePreview(null);
-      } else {
-        toast.error(res.data.message);
-      }
-    } catch (err) {
-      toast.error(err.message);
-    }
-  };
   return (
-    <>
-      <div className="h-screen w-[50%] flex items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col justify-center gap-6 font-bold w-full"
-        >
-          <div>
-            <p className="">Blog Image</p>
-            <label>
-              {!imagePreview ? (
-                <FaImage className="text-6xl" />
-              ) : (
-                <Image
-                  src={imagePreview}
-                  alt="blog img"
-                  width={100}
-                  height={100}
-                  className="w-[150px] h-[70px]"
-                />
-              )}
-              <input type="file" onChange={handleImage} hidden />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="title">Blog Title</label>
+    <div className="py-10 pt-28">
+      <form className="flex flex-col gap-4 m-auto items-start p-8 py-12 w-80 sm:w-[352px] rounded-lg shadow-xl border border-gray-200 bg-white">
+        <p className="text-2xl font-medium m-auto">
+          <span className="text-indigo-500">User</span>{" "}
+          {state === "login" ? "Login" : "Sign Up"}
+        </p>
+        {state === "register" && (
+          <div className="w-full">
+            <p>Name</p>
             <input
+              onChange={(e) => setName(e.target.value)}
+              value={name}
+              placeholder="type here"
+              className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500"
               type="text"
-              id="title"
-              name="title"
-              value={inputData.title}
-              onChange={handleChange}
-              placeholder="Enter Blog Title"
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
+              required
             />
           </div>
-          <div>
-            <label htmlFor="description">Blog Description</label>
-            <textarea
-              id="description"
-              name="description"
-              value={inputData.description}
-              onChange={handleChange}
-              rows="5"
-              placeholder="Enter Blog Description"
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
+        )}
+        <div className="flex items-center w-full mt-10 bg-white border border-gray-300/80 h-12 rounded-full overflow-hidden pl-6 gap-2">
+          <svg
+            width="16"
+            height="11"
+            viewBox="0 0 16 11"
+            fill="none"
+            xmlns="http://www.w3.org/2000/svg"
+          >
+            <path
+              fillRule="evenodd"
+              clipRule="evenodd"
+              d="M0 .55.571 0H15.43l.57.55v9.9l-.571.55H.57L0 10.45zm1.143 1.138V9.9h13.714V1.69l-6.503 4.8h-.697zM13.749 1.1H2.25L8 5.356z"
+              fill="#6B7280"
             />
-          </div>
-          <div>
-            <label>Blog Category</label>
-            <select
-              id="category"
-              name="category"
-              value={inputData.category}
-              onChange={handleChange}
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
+          </svg>
+          <input
+            type="email"
+            placeholder="Email id"
+            className="bg-transparent text-gray-500 placeholder-gray-500 outline-none text-sm w-full h-full"
+            required
+          />
+        </div>
+        <div className="w-full ">
+          <p>Password</p>
+          <input
+            onChange={(e) => setPassword(e.target.value)}
+            value={password}
+            placeholder="type here"
+            className="border border-gray-200 rounded w-full p-2 mt-1 outline-indigo-500"
+            type="password"
+            required
+          />
+        </div>
+        {state === "register" ? (
+          <p>
+            Already have account?{" "}
+            <span
+              onClick={() => setState("login")}
+              className="text-indigo-500 cursor-pointer"
             >
-              <option value="">--Selection option--</option>
-              <option value="Dil Se Baaten">Dil Se Baaten</option>
-              <option value="Khayalon Ki Dunia">Khayalon Ki Dunia</option>
-              <option value="Rozana Ki Diary">Rozana Ki Diary</option>
-            </select>
-          </div>
-          <div>
-            <button
-              type="submit"
-              className="w-full border border-muted rounded-md py-1.5 ps-2 bg-primary hover:bg-secondary transition duration-500"
+              click here
+            </span>
+          </p>
+        ) : (
+          <p>
+            Create an account?{" "}
+            <span
+              onClick={() => setState("register")}
+              className="text-indigo-500 cursor-pointer"
             >
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
-    </>
+              click here
+            </span>
+          </p>
+        )}
+        <button className="bg-indigo-500 hover:bg-indigo-600 transition-all text-white w-full py-2 rounded-md cursor-pointer">
+          {state === "register" ? "Create Account" : "Login"}
+        </button>
+      </form>
+    </div>
   );
 }
+
+export default page;
