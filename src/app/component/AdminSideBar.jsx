@@ -4,9 +4,9 @@ import React from "react";
 function AdminSideBar() {
   return (
     <>
-      <div className="border-r-2 border-primary flex flex-col gap-10 items-center justify-center text-center capitalize font-semibold h-full text-foreground ">
+      <div className="flex flex-col gap-10 items-center justify-center text-center capitalize font-semibold h-full text-foreground ">
         <Link
-          href="/"
+          href="/admin/add-blog"
           className="border-2 border-primary rounded-md w-[80%] py-2"
         >
           Add blog

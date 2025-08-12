@@ -1,24 +1,34 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "@/lib/db/db";
-import { Blog } from "@/lib/model/blog";
+import { connectDB } from "../../../../lib/helper";
+import { Blog } from "../../../../lib/model/blog";
+import { validateToken } from "../../../../lib/helper";
 
 export let POST = async (request) => {
-  await connectDB();
   try {
-    let { image, title, description, category } = await request.json();
+    await connectDB();
+    let { userId } = await validateToken();
 
-    if (!image || !title || !description || !category) {
+    let { image, title, description, content, category } = await request.json();
+
+    if (!image || !title || !description || !content || !category) {
       return NextResponse.json({
         error: true,
         message: "All fields are required",
       });
     }
 
-    let data = await Blog.create({ image, title, description, category });
+    let blog = await Blog.create({
+      image,
+      title,
+      description,
+      content,
+      category,
+      userId: userId,
+    });
     return NextResponse.json({
       success: true,
       message: "Blog added successfully",
-      data,
+      data: blog,
     });
   } catch (err) {
     return NextResponse.json({ error: true, message: err.message });

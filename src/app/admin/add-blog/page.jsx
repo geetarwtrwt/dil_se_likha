@@ -9,6 +9,7 @@ export default function AddBlog() {
   let [inputData, setInputData] = useState({
     title: "",
     description: "",
+    content: "",
     category: "",
   });
 
@@ -39,6 +40,7 @@ export default function AddBlog() {
         !image ||
         !inputData.title ||
         !inputData.description ||
+        !inputData.content ||
         !inputData.category
       ) {
         toast.error("All fields are required");
@@ -68,6 +70,7 @@ export default function AddBlog() {
         setInputData({
           title: "",
           description: "",
+          content: "",
           category: "",
         });
         setImage(null);
@@ -82,7 +85,7 @@ export default function AddBlog() {
   };
   return (
     <>
-      <div className="min-h-screen w-[50%] flex items-center justify-center">
+      <div className="py-4 w-[50%] flex items-center justify-center">
         <form
           onSubmit={handleSubmit}
           className="flex flex-col justify-center gap-6 font-bold w-full"
@@ -122,14 +125,26 @@ export default function AddBlog() {
             />
           </div>
           <div>
-            <label htmlFor="description">Blog Description</label>
-            <textarea
-              rows={5}
+            <label htmlFor="title">Blog Description</label>
+            <input
+              type="text"
               id="description"
               name="description"
               value={inputData.description}
               onChange={handleChange}
-              placeholder="Enter Blog Description"
+              placeholder="Enter Blog Title"
+              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
+            />
+          </div>
+          <div>
+            <label htmlFor="description">Blog Content</label>
+            <textarea
+              rows={5}
+              id="content"
+              name="content"
+              value={inputData.content}
+              onChange={handleChange}
+              placeholder="Enter Blog Content"
               className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
             ></textarea>
           </div>

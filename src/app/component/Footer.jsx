@@ -136,8 +136,7 @@ function Footer() {
           </a>
         </div>
         <p className="mt-8 text-center">
-          Copyright © 2025 <a href="https://prebuiltui.com">PrebuiltUI</a>. All
-          rights reservered.
+          Copyright © 2025. All rights reservered.
         </p>
       </footer>
     </>
