@@ -1,7 +1,8 @@
 import { ToastContainer } from "react-toastify";
 import { Playfair_Display, Inter } from "next/font/google";
 import { ProvideContext } from "./AuthContext";
-import UserLayout from "./userlayout";
+import NavBar from "./component/NavBar";
+import Footer from "./component/Footer";
 
 import "./globals.css";
 
@@ -25,7 +26,9 @@ export default function RootLayout({ children }) {
     <html lang="en">
       <body className={`${playfairDisplay.variable} ${inter.variable} `}>
         <ProvideContext>
-          <UserLayout>{children}</UserLayout>
+          <NavBar />
+          {children}
+          <Footer />
           <ToastContainer autoClose={1500} />
         </ProvideContext>
       </body>

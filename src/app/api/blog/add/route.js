@@ -1,5 +1,5 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "../../../../lib/helper";
+import { connectDB } from "../../../../lib/db/db";
 import { Blog } from "../../../../lib/model/blog";
 import { validateToken } from "../../../../lib/helper";
 

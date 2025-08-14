@@ -11,7 +11,6 @@ export let POST = async (request) => {
       maxAge: new Date(0),
       path: "/",
     });
-
     return NextResponse.json({
       success: true,
       msg: "User logged out successfully",

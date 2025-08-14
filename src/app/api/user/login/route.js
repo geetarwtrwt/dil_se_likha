@@ -14,15 +14,9 @@ export let POST = async (request) => {
       return NextResponse.json({ error: true, msg: "Invalid credentials" });
     }
 
-    let token = jwt.sign(
-      { id: exits._id, isAdmin: exits.isAdmin },
-      process.env.SECRET_KEY,
-      {
-        expiresIn: "1d",
-      }
-    );
-
-    console.log("exits.isAdmin ", exits.isAdmin);
+    let token = jwt.sign({ id: exits._id }, process.env.SECRET_KEY, {
+      expiresIn: "1d",
+    });
 
     let response = NextResponse.json({
       success: true,

@@ -10,7 +10,8 @@ export let ProvideContext = ({ children }) => {
   let route = useRouter();
   let pathName = usePathname();
   let [userData, setUserData] = useState(null);
-  let [blogData, setBlogData] = useState(null);
+  let [blogData, setBlogData] = useState([]);
+  let [inputSearchData, setInputSearchData] = useState("");
 
   let fetchUserData = async () => {
     try {
@@ -27,7 +28,6 @@ export let ProvideContext = ({ children }) => {
   let fetchBlogData = async () => {
     try {
       let res = await axios.get("/api/blog/get");
-      console.log(res);
       if (res.data.success) {
         setBlogData(res.data.msg);
       }
@@ -40,7 +40,6 @@ export let ProvideContext = ({ children }) => {
     fetchUserData();
     fetchBlogData();
   }, []);
-  // console.log(userData);
   return (
     <AppContext.Provider
       value={{
@@ -51,7 +50,10 @@ export let ProvideContext = ({ children }) => {
         userData,
         setUserData,
         fetchUserData,
+        fetchBlogData,
         blogData,
+        inputSearchData,
+        setInputSearchData,
       }}
     >
       {children}

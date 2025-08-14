@@ -16,7 +16,7 @@ export let POST = async (request) => {
       return NextResponse.json({ error: true, msg: "User already exists" });
     }
 
-    let data = await User.create({ name, email, password, isAdmin: false });
+    let data = await User.create({ name, email, password });
 
     return NextResponse.json({ success: true, msg: "Signup done", data });
   } catch (err) {

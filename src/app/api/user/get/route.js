@@ -8,7 +8,7 @@ export let GET = async (request) => {
     await connectDB();
     let { userId } = await validateToken();
 
-    let data = await User.findOne({ userId }).select("-password");
+    let data = await User.findById(userId).select("-password");
     if (!data) {
       return NextResponse.json({ error: true, msg: "User not found" });
     }

@@ -1,6 +1,7 @@
 "use client";
 import React, { useState } from "react";
 import Image from "next/image";
+import { UseAppContext } from "@/app/AuthContext";
 
 let categoryTab = [
   { name: "All", tab: "all" },
@@ -9,49 +10,9 @@ let categoryTab = [
   { name: "Rozana Ki Diary", tab: "rozanaKiDiary" },
 ];
 
-let blogData = [
-  {
-    img: "/blogimg.jpg",
-    category: "Dil Se Baaten",
-    tab: "dilSeBaaten",
-    heading: "Lorem, ipsum dolor.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit Deleniti asperiores nobis nesciunt corporis officiis maiores,commodi quam aut laborum vero?",
-  },
-  {
-    img: "/blogimg.jpg",
-    category: "Khayalon Ki Dunia",
-    tab: "khayalonKiDunia",
-    heading: "Lorem, ipsum dolor.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit Deleniti asperiores nobis nesciunt corporis officiis maiores,commodi quam aut laborum vero?",
-  },
-  {
-    img: "/blogimg.jpg",
-    category: "Rozana Ki Diary",
-    tab: "rozanaKiDiary",
-    heading: "Lorem, ipsum dolor.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit Deleniti asperiores nobis nesciunt corporis officiis maiores,commodi quam aut laborum vero?",
-  },
-  {
-    img: "/blogimg.jpg",
-    category: "Dil Se Baaten",
-    tab: "dilSeBaaten",
-    heading: "Lorem, ipsum dolor.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit Deleniti asperiores nobis nesciunt corporis officiis maiores,commodi quam aut laborum vero?",
-  },
-  {
-    img: "/blogimg.jpg",
-    category: "Rozana Ki Diary",
-    tab: "rozanaKiDiary",
-    heading: "Lorem, ipsum dolor.",
-    description:
-      "Lorem ipsum, dolor sit amet consectetur adipisicing elit Deleniti asperiores nobis nesciunt corporis officiis maiores,commodi quam aut laborum vero?",
-  },
-];
 function BlogCategory() {
+  let { blogData, route } = UseAppContext();
+
   let [tabSelect, setTabSelect] = useState("all");
   let filterCategoryTab =
     tabSelect === "all"
@@ -81,16 +42,19 @@ function BlogCategory() {
           </div>
 
           <div className="flex flex-wrap justify-between gap-8">
-            {filterCategoryTab.map((e, index) => {
+            {filterCategoryTab.slice(0, 3).map((e, index) => {
               return (
                 <div
                   key={index}
-                  className="w-[30%] border border-primary rounded-md overflow-hidden"
+                  className="w-[25%] border border-primary rounded-md overflow-hidden"
                 >
-                  <div className="w-full">
+                  <div
+                    className="w-full cursor-pointer"
+                    onClick={() => route.push(`/blog_page/${e._id}`)}
+                  >
                     <Image
                       alt="blog img"
-                      src={e.img}
+                      src={e.image}
                       width={100}
                       height={100}
                       className="w-full h-[180px]"
@@ -105,13 +69,24 @@ function BlogCategory() {
                       {e.description.split(" ").splice(0, 10).join(" ") +
                         " ....."}
                     </p>
-                    <button className="bg-primary hover:bg-secondary py-2 px-4 font-semibold rounded text-background">
+                    <button
+                      onClick={() => route.push(`/blog_page/${e._id}`)}
+                      className="cursor-pointer bg-primary hover:bg-secondary py-2 px-4 font-semibold rounded text-background"
+                    >
                       Read More
                     </button>
                   </div>
                 </div>
               );
             })}
+          </div>
+          <div className="flex justify-center">
+            <button
+              onClick={() => route.push(`/blog`)}
+              className="cursor-pointer bg-primary hover:bg-secondary py-2 px-4 font-semibold rounded text-background"
+            >
+              Explore More
+            </button>
           </div>
         </div>
       </section>

@@ -9,13 +9,13 @@ function Footer() {
           <Link href="/" className="hover:text-foreground transition-all">
             Home
           </Link>
-          <Link href="/" className="hover:text-foreground transition-all">
+          <Link href="/about" className="hover:text-foreground transition-all">
             About
           </Link>
-          <Link href="/" className="hover:text-foreground transition-all">
+          <Link href="/blog" className="hover:text-foreground transition-all">
             Blog
           </Link>
-          <Link href="/" className="hover:text-foreground transition-all">
+          <Link href="/contact" className="hover:text-foreground transition-all">
             Contact
           </Link>
         </div>

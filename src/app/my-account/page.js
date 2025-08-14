@@ -27,7 +27,7 @@ function Page() {
         console.log(res);
         if (res.data.success) {
           route.push("/admin/add-blog");
-          fetchUserData();
+          await fetchUserData();
           toast.success(res.data.msg);
           setInputData({
             email: "",

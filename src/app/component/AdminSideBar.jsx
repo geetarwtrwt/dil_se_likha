@@ -12,7 +12,7 @@ function AdminSideBar() {
           Add blog
         </Link>
         <Link
-          href="/"
+          href="/admin/blog-list"
           className="border-2 border-primary rounded-md w-[80%] py-2"
         >
           blog list
@@ -21,7 +21,7 @@ function AdminSideBar() {
           href="/"
           className="border-2 border-primary rounded-md w-[80%] py-2"
         >
-          Comments
+          Message
         </Link>
       </div>
     </>
