@@ -1,21 +1,43 @@
 "use client";
 import React, { useState } from "react";
 import { FaUser, FaEnvelope } from "react-icons/fa";
+import { UseAppContext } from "@/app/AuthContext";
 
 export default function Page() {
+  let { axios, toast } = UseAppContext();
   let [inputData, setInputData] = useState({
     name: "",
     email: "",
-    password: "",
+    message: "",
   });
 
   let handleChange = (e) => {
     let { name, value } = e.target;
     setInputData({ ...inputData, [name]: value });
-    console.log(name, value);
+  };
+
+  let handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      let res = await axios.post("/api/contact/add", inputData);
+      if (res.data.success) {
+        toast.success(res.data.message);
+        setInputData({
+          name: "",
+          email: "",
+          message: "",
+        });
+      }
+    } catch (err) {
+      console.log(err.message);
+      toast.error(err.message);
+    }
   };
   return (
-    <form className="py-16 pt-28 flex flex-col items-center text-sm">
+    <form
+      onSubmit={handleSubmit}
+      className="py-16 pt-28 flex flex-col items-center text-sm"
+    >
       <p className="text-xs bg-primary text-background font-medium px-3 py-1 rounded-full">
         Contact Us
       </p>

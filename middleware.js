@@ -18,10 +18,9 @@ export async function middleware(request) {
     verifyToken = null;
   }
 
-  if (verifyToken && publicPaths) {
-    console.log("token", verifyToken);
+  if (verifyToken?.admin && publicPaths) {
     return NextResponse.redirect(new URL("/admin/add-blog", request.url));
-  } else if (!verifyToken && !publicPaths) {
+  } else if (!verifyToken?.admin && !publicPaths) {
     return NextResponse.redirect(new URL("/my-account", request.url));
   }
   return NextResponse.next();

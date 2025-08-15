@@ -16,7 +16,6 @@ function Page() {
   let handleChange = (e) => {
     let { name, value } = e.target;
     setInputData({ ...inputData, [name]: value });
-    console.log(name, value);
   };
 
   let handleSubmit = async (e) => {
@@ -24,7 +23,6 @@ function Page() {
     try {
       if (state === "login") {
         let res = await axios.post("/api/user/login", inputData);
-        console.log(res);
         if (res.data.success) {
           route.push("/admin/add-blog");
           await fetchUserData();
@@ -38,7 +36,6 @@ function Page() {
         }
       } else {
         let res = await axios.post("/api/user/signup", inputData);
-        console.log(res);
         if (res.data.success) {
           setState("login");
           toast.success(res.data.msg);

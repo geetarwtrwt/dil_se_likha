@@ -11,6 +11,7 @@ export let ProvideContext = ({ children }) => {
   let pathName = usePathname();
   let [userData, setUserData] = useState(null);
   let [blogData, setBlogData] = useState([]);
+  let [contactData, setContactData] = useState([]);
   let [inputSearchData, setInputSearchData] = useState("");
 
   let fetchUserData = async () => {
@@ -36,9 +37,49 @@ export let ProvideContext = ({ children }) => {
       console.log(err.message);
     }
   };
+
+  let fetchContactData = async () => {
+    try {
+      let res = await axios.get("/api/contact/get");
+      if (res.data.success) {
+        setContactData(res.data.data);
+      }
+    } catch (err) {
+      toast.error(err.message);
+      console.log(err.message);
+    }
+  };
+  let [blogInputData, setBlogInputData] = useState({
+    title: "",
+    description: "",
+    content: "",
+    category: "",
+  });
+
+  let [blogImage, setBlogImage] = useState(null);
+  let [blogImagePreview, setBlogImagePreview] = useState(null);
+  let handleBlogImage = (e) => {
+    let file = e.target.files[0];
+    if (!file) return;
+
+    let exits = file.name.split(".").pop().toLowerCase();
+    if (!["jpg", "jpeg", "png", "webp"].includes(exits)) {
+      toast.error("Invalid file type");
+      return;
+    }
+
+    setBlogImage(file);
+    setBlogImagePreview(URL.createObjectURL(file));
+  };
+  let handleBlogChange = (e) => {
+    let { name, value } = e.target;
+    setBlogInputData({ ...blogInputData, [name]: value });
+  };
+
   useEffect(() => {
     fetchUserData();
     fetchBlogData();
+    fetchContactData();
   }, []);
   return (
     <AppContext.Provider
@@ -54,6 +95,17 @@ export let ProvideContext = ({ children }) => {
         blogData,
         inputSearchData,
         setInputSearchData,
+
+        blogInputData,
+        setBlogInputData,
+        blogImage,
+        setBlogImage,
+        blogImagePreview,
+        setBlogImagePreview,
+        handleBlogImage,
+        handleBlogChange,
+
+        contactData,
       }}
     >
       {children}

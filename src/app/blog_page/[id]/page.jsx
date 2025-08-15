@@ -15,13 +15,12 @@ export default function Page() {
       setData(findBlogData || null);
     }
   }, [blogData, params.id]);
-  console.log(data);
   return (
     <section className="py-16 pt-28 h-full">
       <div className="containerBox flex items-center justify-center">
         {data ? (
           <div className="flex flex-col gap-6 w-[80%]">
-            <h2 className="text-center text-2xl md:text-6xl font-bold text-primary drop-shadow-lg">
+            <h2 className="text-center text-3xl xs:text-4xl md:text-5xl font-bold text-primary drop-shadow-lg">
               {data.title}
             </h2>
             <Image
@@ -29,7 +28,7 @@ export default function Page() {
               src={data.image}
               width={400}
               height={400}
-              className="w-full h-[450px]"
+              className="w-full h-[400px] md:h-[600px]"
             />
             <div>
               <h4 className="text-xl md:text-2xl font-bold text-primary border-b border-gray-300 pb-2 mb-4">

@@ -4,7 +4,7 @@ export default function Page() {
   return (
     <section className="py-16 pt-28 h-full">
       <div className="containerBox flex flex-col items-center">
-        <h2 className="mb-4 text-center text-2xl md:text-6xl font-bold text-primary drop-shadow-lg">
+        <h2 className="mb-4 text-center text-3xl xs:text-4xl md:text-5xl  font-bold text-primary drop-shadow-lg">
           About Us
         </h2>
         <p className="text-lg md:w-[70%] leading-8 text-center md:text-left indent-10">

@@ -1,53 +1,34 @@
 "use client";
 import React, { useState } from "react";
-import Image from "next/image";
-import { FaImage } from "react-icons/fa";
-import { toast } from "react-toastify";
-import axios from "axios";
+import Add_Blog from "@/app/component/Add_Blog";
+import { UseAppContext } from "@/app/AuthContext";
 
-export default function AddBlog() {
-  let [inputData, setInputData] = useState({
-    title: "",
-    description: "",
-    content: "",
-    category: "",
-  });
-
-  let [image, setImage] = useState(null);
-  let [imagePreview, setImagePreview] = useState(null);
-  let handleImage = (e) => {
-    let file = e.target.files[0];
-    if (!file) return;
-
-    let exits = file.name.split(".").pop().toLowerCase();
-    if (!["jpg", "jpeg", "png", "webp"].includes(exits)) {
-      toast.error("Invalid file type");
-      return;
-    }
-
-    setImage(file);
-    setImagePreview(URL.createObjectURL(file));
-  };
-  let handleChange = (e) => {
-    let { name, value } = e.target;
-    setInputData({ ...inputData, [name]: value });
-  };
+export default function Page() {
+  let {
+    toast,
+    axios,
+    blogInputData,
+    setBlogInputData,
+    blogImage,
+    setBlogImage,
+    setBlogImagePreview,
+  } = UseAppContext();
 
   let handleSubmit = async (e) => {
     e.preventDefault();
     try {
       if (
-        !image ||
-        !inputData.title ||
-        !inputData.description ||
-        !inputData.content ||
-        !inputData.category
+        !blogImage ||
+        !blogInputData.title ||
+        !blogInputData.description ||
+        !blogInputData.content ||
+        !blogInputData.category
       ) {
         toast.error("All fields are required");
       }
 
       let formData = new FormData();
-      formData.append("file", image);
+      formData.append("file", blogImage);
       formData.append("upload_preset", "dil_se_likha");
       formData.append("cloud_name", "dgllhyxgc");
       let cloudinaryRes = await fetch(
@@ -62,19 +43,20 @@ export default function AddBlog() {
       let imgUrl = data.secure_url;
 
       let res = await axios.post("/api/blog/add", {
-        ...inputData,
+        ...blogInputData,
         image: imgUrl,
       });
+
       if (res.data.success) {
         toast.success(res.data.message);
-        setInputData({
+        setBlogInputData({
           title: "",
           description: "",
           content: "",
           category: "",
         });
-        setImage(null);
-        setImagePreview(null);
+        setBlogImage(null);
+        setBlogImagePreview(null);
       } else {
         toast.error(res.data.message);
       }
@@ -85,91 +67,9 @@ export default function AddBlog() {
   };
   return (
     <>
-      <div className="py-4 w-[50%] flex items-center justify-center">
-        <form
-          onSubmit={handleSubmit}
-          className="flex flex-col justify-center gap-6 font-bold w-full"
-        >
-          <div>
-            <p className="">Blog Image</p>
-            <label>
-              {!imagePreview ? (
-                <FaImage className="text-6xl" />
-              ) : (
-                <Image
-                  src={imagePreview}
-                  alt="blog img"
-                  width={100}
-                  height={100}
-                  className="w-[150px] h-[70px]"
-                />
-              )}
-              {/* <img
-                src={imagePreview}
-                alt="blog img"
-                className="w-[100px] h-[70px] rounded"
-              /> */}
-              <input type="file" onChange={handleImage} hidden />
-            </label>
-          </div>
-          <div>
-            <label htmlFor="title">Blog Title</label>
-            <input
-              type="text"
-              id="title"
-              name="title"
-              value={inputData.title}
-              onChange={handleChange}
-              placeholder="Enter Blog Title"
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="title">Blog Description</label>
-            <input
-              type="text"
-              id="description"
-              name="description"
-              value={inputData.description}
-              onChange={handleChange}
-              placeholder="Enter Blog Title"
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
-            />
-          </div>
-          <div>
-            <label htmlFor="description">Blog Content</label>
-            <textarea
-              rows={5}
-              id="content"
-              name="content"
-              value={inputData.content}
-              onChange={handleChange}
-              placeholder="Enter Blog Content"
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
-            ></textarea>
-          </div>
-          <div>
-            <label>Blog Category</label>
-            <select
-              id="category"
-              name="category"
-              value={inputData.category}
-              onChange={handleChange}
-              className="w-full font-normal border border-muted rounded-md py-1.5 ps-2"
-            >
-              <option>--Selection option--</option>
-              <option value="Dil Se Baaten">Dil Se Baaten</option>
-              <option value="Khayalon Ki Dunia">Khayalon Ki Dunia</option>
-              <option value="Rozana Ki Diary">Rozana Ki Diary</option>
-            </select>
-          </div>
-          <div>
-            <button className="w-full border border-muted rounded-md py-1.5 ps-2 bg-primary hover:bg-secondary transition duration-500">
-              Submit
-            </button>
-          </div>
-        </form>
-      </div>
+      <section>
+        <Add_Blog handleSubmit={handleSubmit} />
+      </section>
     </>
   );
 }

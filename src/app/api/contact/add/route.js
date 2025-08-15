@@ -1,6 +1,6 @@
 import { NextResponse } from "next/server";
-import { connectDB } from "../../../../lib/db/db";
-import { Contact } from "../../../../lib/model/contact";
+import { connectDB } from "@/lib/db/db";
+import { Contact } from "@/lib/model/contact";
 
 export let POST = async (request) => {
   try {

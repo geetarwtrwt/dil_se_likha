@@ -1,7 +1,8 @@
 "use client";
 import React, { useEffect, useState } from "react";
 import { IoSearch } from "react-icons/io5";
-import { FaHeart, FaBars } from "react-icons/fa6";
+import { FaBars } from "react-icons/fa6";
+import { FaUser } from "react-icons/fa";
 import Link from "next/link";
 import { UseAppContext } from "../AuthContext";
 
@@ -17,12 +18,12 @@ function NavBar() {
     pathName,
   } = UseAppContext();
   const [open, setOpen] = useState(false);
+  const [userOpen, setUserOpen] = useState(false);
   const [searchOpen, setSearchOpen] = useState(false);
 
   let handleLogout = async () => {
     try {
       let res = await axios.post("/api/user/logout");
-      console.log(res);
       if (res.data.success) {
         route.push("/my-account");
         setUserData(null);
@@ -55,31 +56,42 @@ function NavBar() {
             DilSeLikha
           </Link>
 
-          {/* Desktop Menu */}
-          <div className="hidden sm:flex items-center gap-8 font-medium text-foreground">
+          <div className="hidden md:flex items-center gap-8 font-medium text-foreground">
             <Link
               href="/"
-              onClick={() => setSearchOpen(false)}
+              onClick={() => {
+                setSearchOpen(false);
+                setUserOpen(false);
+              }}
               className="hover:text-muted transition-all"
             >
               Home
             </Link>
             <Link
-              onClick={() => setSearchOpen(false)}
+              onClick={() => {
+                setSearchOpen(false);
+                setUserOpen(false);
+              }}
               href="/about"
               className="hover:text-muted transition-all"
             >
               About
             </Link>
             <Link
-              onClick={() => setSearchOpen(false)}
+              onClick={() => {
+                setSearchOpen(false);
+                setUserOpen(false);
+              }}
               href="/blog"
               className="hover:text-muted transition-all"
             >
               Blog
             </Link>
             <Link
-              onClick={() => setSearchOpen(false)}
+              onClick={() => {
+                setSearchOpen(false);
+                setUserOpen(false);
+              }}
               href="/contact"
               className="hover:text-muted transition-all"
             >
@@ -103,6 +115,7 @@ function NavBar() {
                 onClick={() => {
                   setSearchOpen(!searchOpen);
                   setInputSearchData("");
+                  setUserOpen(false);
                 }}
                 className="text-xl"
               >
@@ -124,22 +137,41 @@ function NavBar() {
               </div>
             )}
 
-            <div className="relative cursor-pointer">
-              <FaHeart
-                onClick={() => setSearchOpen(false)}
-                className="text-primary text-xl"
-              />
-            </div>
             {userData ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setSearchOpen(false);
-                }}
-                className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
-              >
-                Logout
-              </button>
+              <div className="relative pb-2">
+                <FaUser
+                  className="text-2xl text-primary cursor-pointer"
+                  onClick={() => {
+                    setUserOpen(!userOpen);
+                    setSearchOpen(false);
+                  }}
+                />
+                {userOpen && (
+                  <div className="absolute text-center top-8 left-1/2 -translate-x-1/2 bg-primary rounded-md overflow-hidden">
+                    <button
+                      onClick={() => {
+                        handleLogout();
+                        setSearchOpen(false);
+                      }}
+                      className="cursor-pointer px-8 w-full py-1.5 hover:bg-secondary transition text-white"
+                    >
+                      Logout
+                    </button>
+
+                    {userData?.isAdmin && (
+                      <button
+                        onClick={() => {
+                          route.push("/admin/add-blog");
+                          setSearchOpen(false);
+                        }}
+                        className="cursor-pointer px-8 w-full py-1.5 hover:bg-secondary transition text-white"
+                      >
+                        Admin
+                      </button>
+                    )}
+                  </div>
+                )}
+              </div>
             ) : (
               <button
                 onClick={() => {
@@ -151,32 +183,48 @@ function NavBar() {
                 Login
               </button>
             )}
-
-            {userData?.isAdmin && (
-              <button
-                onClick={() => {
-                  route.push("/admin/add-blog");
-                  setSearchOpen(false);
-                }}
-                className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
-              >
-                Admin
-              </button>
-            )}
           </div>
 
-          <button
-            onClick={() => {
-              setOpen(!open);
-              setSearchOpen(false);
-            }}
-            aria-label="Menu"
-            className="sm:hidden"
-          >
-            <FaBars />
-          </button>
+          <div className="flex gap-4 text-2xl">
+            <div className="flex items-center gap-4 md:hidden">
+              <button
+                onClick={() => {
+                  setSearchOpen(!searchOpen);
+                  setInputSearchData("");
+                  setUserOpen(false);
+                }}
+              >
+                <IoSearch />
+              </button>
+            </div>
 
-          {/* Mobile Menu */}
+            {searchOpen && (
+              <div className="absolute top-[60px] left-0 w-full bg-background shadow-md p-3 md:hidden">
+                <input
+                  onChange={handleInput}
+                  name="inputSearch"
+                  value={inputSearchData}
+                  autoFocus
+                  className="w-full py-1 px-3 border border-gray-300 rounded-full outline-none text-lg"
+                  type="text"
+                  placeholder="Search products"
+                />
+              </div>
+            )}
+
+            <button
+              onClick={() => {
+                setOpen(!open);
+                setSearchOpen(false);
+                setUserOpen(false);
+              }}
+              aria-label="Menu"
+              className="md:hidden"
+            >
+              <FaBars />
+            </button>
+          </div>
+
           <div
             className={`${
               open ? "flex" : "hidden"
@@ -187,6 +235,7 @@ function NavBar() {
               onClick={() => {
                 setOpen(false);
                 setSearchOpen(false);
+                setUserOpen(false);
               }}
               className="block hover:text-muted transition-all"
             >
@@ -197,6 +246,7 @@ function NavBar() {
               onClick={() => {
                 setOpen(false);
                 setSearchOpen(false);
+                setUserOpen(false);
               }}
               className="block hover:text-muted transition-all"
             >
@@ -207,6 +257,7 @@ function NavBar() {
               onClick={() => {
                 setOpen(false);
                 setSearchOpen(false);
+                setUserOpen(false);
               }}
               className="block hover:text-muted transition-all"
             >
@@ -217,6 +268,7 @@ function NavBar() {
               onClick={() => {
                 setOpen(false);
                 setSearchOpen(false);
+                setUserOpen(false);
               }}
               className="block hover:text-muted transition-all"
             >
@@ -224,27 +276,45 @@ function NavBar() {
             </Link>
 
             {userData ? (
-              <button
-                onClick={() => {
-                  handleLogout();
-                  setOpen(false);
-                  setSearchOpen(false);
-                }}
-                className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
-              >
-                Logout
-              </button>
+              <div className="flex gap-4">
+                <button
+                  onClick={() => {
+                    handleLogout();
+                    setOpen(false);
+                    setSearchOpen(false);
+                    setUserOpen(false);
+                  }}
+                  className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
+                >
+                  Logout
+                </button>
+
+                {userData?.isAdmin && (
+                  <button
+                    onClick={() => {
+                      route.push("/admin/add-blog");
+                      setSearchOpen(false);
+                      setUserOpen(false);
+                    }}
+                    className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
+                  >
+                    Admin
+                  </button>
+                )}
+              </div>
             ) : (
-              <button
-                onClick={() => {
-                  route.push("/my-account");
-                  setOpen(false);
-                  setSearchOpen(false);
-                }}
-                className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
-              >
-                Login
-              </button>
+              <div>
+                <button
+                  onClick={() => {
+                    route.push("/my-account");
+                    setOpen(false);
+                    setSearchOpen(false);
+                  }}
+                  className="cursor-pointer px-8 py-1.5 bg-primary hover:bg-secondary transition text-white rounded-full"
+                >
+                  Login
+                </button>
+              </div>
             )}
           </div>
         </nav>
