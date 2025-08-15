@@ -9,7 +9,7 @@ export default function Page() {
 
   let [tabSelect, setTabSelect] = useState("all");
   let filterCategoryTab = blogData
-    .filter((cate) => tabSelect === "all" || tabSelect === cate.tab)
+    .filter((cate) => tabSelect === "all" || tabSelect === cate.category)
     .filter((e) =>
       inputSearchData === ""
         ? true

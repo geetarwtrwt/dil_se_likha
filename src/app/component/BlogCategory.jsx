@@ -11,17 +11,23 @@ function BlogCategory() {
   let filterCategoryTab =
     tabSelect === "all"
       ? blogData
-      : blogData.filter((cate) => tabSelect === cate.tab);
+      : blogData.filter((cate) => tabSelect === cate.category);
 
   return (
     <>
       <section className="py-16 h-full">
         <div className="containerBox flex flex-col gap-16">
           <CategoryTabs tabSelect={tabSelect} setTabSelect={setTabSelect} />
-          <div className="flex flex-wrap justify-center md:justify-between gap-14 md:gap-8">
-            {filterCategoryTab.slice(0, 3).map((e) => {
-              return <BlogCard e={e} key={e._id} />;
-            })}
+          <div className="flex flex-wrap justify-center md:justify-between items-center gap-14 md:gap-8">
+            {filterCategoryTab.length > 0 ? (
+              filterCategoryTab.map((e) => {
+                return <BlogCard e={e} key={e._id} />;
+              })
+            ) : (
+              <div className="w-full text-2xl">
+                <p className="text-center font-bold ">No Data Found</p>
+              </div>
+            )}
           </div>
           <div className="flex justify-center">
             <button

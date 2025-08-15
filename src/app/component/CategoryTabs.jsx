@@ -2,9 +2,9 @@ import React from "react";
 
 let categoryTab = [
   { name: "All", tab: "all" },
-  { name: "Dil Se Baaten", tab: "dilSeBaaten" },
-  { name: "Khayalon Ki Dunia", tab: "khayalonKiDunia" },
-  { name: "Rozana Ki Diary", tab: "rozanaKiDiary" },
+  { name: "Dil Se Baaten", tab: "Dil Se Baaten" },
+  { name: "Khayalon Ki Dunia", tab: "Khayalon Ki Dunia" },
+  { name: "Rozana Ki Diary", tab: "Rozana Ki Diary" },
 ];
 function CategoryTabs({ tabSelect, setTabSelect }) {
   return (
