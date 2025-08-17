@@ -5,7 +5,7 @@ import CategoryTabs from "@/app/component/CategoryTabs";
 import BlogCard from "@/app/component/BlogCard";
 
 function BlogCategory() {
-  let { blogData } = UseAppContext();
+  let { blogData, loading } = UseAppContext();
 
   let [tabSelect, setTabSelect] = useState("all");
   let filterCategoryTab =
@@ -19,9 +19,17 @@ function BlogCategory() {
         <div className="containerBox flex flex-col gap-16">
           <CategoryTabs tabSelect={tabSelect} setTabSelect={setTabSelect} />
           <div className="flex flex-wrap justify-center md:justify-between items-center gap-14 md:gap-8">
-            {filterCategoryTab.length > 0 ? (
+            {loading ? (
+              <div className="w-full text-2xl">
+                <p className="text-center font-bold ">Loading...</p>
+              </div>
+            ) : filterCategoryTab.length > 0 ? (
               filterCategoryTab.map((e) => {
-                return <BlogCard e={e} key={e._id} />;
+                return (
+                  <>
+                    <BlogCard e={e} key={e._id} />;
+                  </>
+                );
               })
             ) : (
               <div className="w-full text-2xl">
@@ -29,14 +37,16 @@ function BlogCategory() {
               </div>
             )}
           </div>
-          <div className="flex justify-center">
-            <button
-              onClick={() => route.push(`/blog`)}
-              className="cursor-pointer bg-primary hover:bg-secondary py-2 px-4 font-semibold rounded text-background"
-            >
-              Explore More
-            </button>
-          </div>
+          {filterCategoryTab.length > 0 && !loading && (
+            <div className="flex justify-center">
+              <button
+                onClick={() => route.push(`/blog`)}
+                className="cursor-pointer bg-primary hover:bg-secondary py-2 px-4 font-semibold rounded text-background"
+              >
+                Explore More
+              </button>
+            </div>
+          )}
         </div>
       </section>
     </>

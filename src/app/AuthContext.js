@@ -13,7 +13,7 @@ export let ProvideContext = ({ children }) => {
   let [blogData, setBlogData] = useState([]);
   let [contactData, setContactData] = useState([]);
   let [inputSearchData, setInputSearchData] = useState("");
-
+  let [loading, setLoading] = useState(false);
   let fetchUserData = async () => {
     try {
       let res = await axios.get("/api/user/get");
@@ -28,6 +28,7 @@ export let ProvideContext = ({ children }) => {
 
   let fetchBlogData = async () => {
     try {
+      setLoading(true);
       let res = await axios.get("/api/blog/get");
       if (res.data.success) {
         setBlogData(res.data.msg);
@@ -35,6 +36,8 @@ export let ProvideContext = ({ children }) => {
     } catch (err) {
       toast.error(err.message);
       console.log(err.message);
+    } finally {
+      setLoading(false);
     }
   };
 
@@ -93,6 +96,7 @@ export let ProvideContext = ({ children }) => {
         fetchUserData,
         fetchBlogData,
         blogData,
+        loading,
         inputSearchData,
         setInputSearchData,
 

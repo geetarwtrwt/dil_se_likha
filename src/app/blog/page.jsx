@@ -5,7 +5,7 @@ import CategoryTabs from "@/app/component/CategoryTabs";
 import BlogCard from "@/app/component/BlogCard";
 
 export default function Page() {
-  let { blogData, inputSearchData } = UseAppContext();
+  let { blogData, inputSearchData, loading } = UseAppContext();
 
   let [tabSelect, setTabSelect] = useState("all");
   let filterCategoryTab = blogData
@@ -24,9 +24,17 @@ export default function Page() {
         <div className="containerBox flex flex-col gap-16">
           <CategoryTabs tabSelect={tabSelect} setTabSelect={setTabSelect} />
           <div className="flex flex-wrap justify-center md:justify-between items-center gap-14 md:gap-8">
-            {filterCategoryTab.length > 0 ? (
+            {loading ? (
+              <div className="w-full text-2xl">
+                <p className="text-center font-bold ">Loading...</p>
+              </div>
+            ) : filterCategoryTab.length > 0 ? (
               filterCategoryTab.map((e) => {
-                return <BlogCard e={e} key={e._id} />;
+                return (
+                  <>
+                    <BlogCard e={e} key={e._id} />;
+                  </>
+                );
               })
             ) : (
               <div className="w-full text-2xl">
